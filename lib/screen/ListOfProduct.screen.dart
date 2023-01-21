@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:restaurant_app/core/controller/product.controller.dart';
+import 'package:restaurant_app/screen/ProductDetail.screen.dart';
 
 class ProductScreen extends StatelessWidget {
   ProductScreen({super.key, required this.restorantId});
@@ -38,7 +39,7 @@ class _ListveiwProduct extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
                             onTap: () {
-                              // Get.to(()=> ProductScreen(ProductId: e.,));
+                              Get.to(()=> ProductDetailScreen(productModel: e ,restorantId:restorantId ,));
                             },
                             child: Row(
                               children: [

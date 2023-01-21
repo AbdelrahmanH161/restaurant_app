@@ -6,12 +6,16 @@ import 'package:restaurant_app/core/service/Product.service.dart';
 class ProductController extends GetxController {
   List<ProductModel> get productModel => _productModel;
   List<ProductModel> _productModel = [];
-  ProductService productService = new ProductService();
-  ProductController (restorantId) {
+
+  ProductController (String restorantId) {
     getProduct(restorantId);
   }
   getProduct(String restorantId) async {
-    _productModel = await productService.getproductservice(restorantId);
-    update();
+    ProductService().getproductservice(restorantId).then((value) => {
+      for(int i = 0; i< value.length ; i++){
+        _productModel.add(ProductModel.fromJson(value[i].data() as Map<String, dynamic>, value[i].id))
+      },
+    update()
+    });
   }
 }

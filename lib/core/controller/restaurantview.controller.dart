@@ -13,12 +13,12 @@ class RestorantController extends GetxController {
     RestorantService().getRestorantapi().then((value) => {
           for (int i = 0; i < value.length; i++)
             {
-              print(value[i].data()),
+              // print(value[i].data()),
               _resturantModel.add(RestaurantModel.fromJson(
                   value[i].data() as Map<String, dynamic>, value[i].id))
             },
           update()
         });
-    print(_resturantModel.length);
+    // print(_resturantModel.length);
   }
 }
