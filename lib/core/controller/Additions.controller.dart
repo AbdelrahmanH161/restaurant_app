@@ -16,7 +16,7 @@ class AdditionControler extends GetxController {
             {
               _additionsModel.add(AdditionModel.fromJson(
                   value[i].data() as Map<String, dynamic>, value[i].id)),
-              print(_additionsModel.length)
+              // print(_additionsModel.length)
             },
           update(),
         });

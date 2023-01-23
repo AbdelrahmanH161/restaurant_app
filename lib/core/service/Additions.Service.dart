@@ -7,7 +7,6 @@ class AddtionService {
         .collection(
             '/Restaurants/${restorantId}/Products/${ProductID}/Additions');
     var data = await _addtionCollectionRef.get();
-    print('sjkdhsjkhd');
     return data.docs;
   }
 }
