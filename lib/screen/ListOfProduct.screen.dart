@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:restaurant_app/core/controller/product.controller.dart';
+import 'package:restaurant_app/core/models/product.model.dart';
 import 'package:restaurant_app/screen/ProductDetail.screen.dart';
 
 class ProductScreen extends StatelessWidget {
-  ProductScreen({super.key, required this.restorantId});
-  final String restorantId;
+  ProductScreen({super.key, required this.listProduct});
+  List<ProductsModel> listProduct;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,44 +17,45 @@ class ProductScreen extends StatelessWidget {
           ),
         ),
         body: _ListveiwProduct(
-          restorantId: restorantId,
+          listProduct: listProduct,
         ));
   }
 }
 
 class _ListveiwProduct extends StatelessWidget {
-  const _ListveiwProduct({super.key, required this.restorantId});
-  final String restorantId;
-  
+  const _ListveiwProduct({super.key, required this.listProduct});
+  final List<ProductsModel> listProduct;
+
   @override
   Widget build(BuildContext context) {
-    ProductController crt = Get.put(ProductController(restorantId));
-    return GetBuilder<ProductController>(
-        builder: (((controller) => ListView(
-              children: [
-                ...controller.productModel
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(()=> ProductDetailScreen(productModel: e ,restorantId:restorantId ,));
-                            },
-                            child: Row(
-                              children: [
-                                Image.network(
-                                  e.image,
-                                  width: 40,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(e.name)
-                              ],
-                            ),
-                          ),
-                        ))
-                    .toList()
-              ],
-            ))));
+    return ListView(
+      children: [
+        ...listProduct.map((e) => InkWell(
+              onTap: () {
+                Get.to(ProductDetailScreen(product: e));
+              },
+              child: Card(
+                child: Row(
+                  children: [
+                    Image.network(
+                      e.image,
+                      width: 60,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(e.nameAR),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ))
+      ],
+    );
   }
 }

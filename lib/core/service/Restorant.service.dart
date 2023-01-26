@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:restaurant_app/core/models/restaurant.model.dart';
+import 'package:restaurant_app/core/models/Restorant.model.dart';
 
 class RestorantService {
   final CollectionReference _restorantCollectionRef =
