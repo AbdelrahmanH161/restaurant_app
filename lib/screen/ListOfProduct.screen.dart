@@ -27,9 +27,8 @@ class _ListveiwProduct extends StatelessWidget {
   final String restorantId;
   @override
   Widget build(BuildContext context) {
-    ProductController ctr = Get.put(ProductController(restorantId));
     return GetBuilder<ProductController>(
-      init: ProductController(restorantId),
+      init: Get.put(ProductController(restorantId)),
       builder: (controller) => ListView(
         children: [
           ...controller.productsList

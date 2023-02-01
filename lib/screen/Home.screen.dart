@@ -5,11 +5,10 @@ import 'package:restaurant_app/core/controller/Restaurant.controller.dart';
 import 'package:restaurant_app/screen/ListOfProduct.screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+  HomeScreen({super.key});
+  final CartController controllerCart = Get.put(CartController());
   @override
   Widget build(BuildContext context) {
-    RestorantController ctr = Get.put(RestorantController());
     return Scaffold(
         appBar: AppBar(
           actions: [],
@@ -27,7 +26,6 @@ class _ListveiwRestorant extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CartController ctr = Get.put(CartController());
     return GetBuilder<RestorantController>(
         init: RestorantController(),
         builder: ((controller) => ListView.builder(

@@ -1,44 +1,43 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:restaurant_app/core/models/Addition.model.dart';
 import 'package:restaurant_app/core/models/CartModal.dart';
-import 'package:restaurant_app/core/models/order.model.dart';
 
 class CartController extends GetxController {
-  List<CartModal> _cart = [];
-  List<CartModal> get cartList => _cart;
+  List<ProductOrderModel> _cart = [];
+  List<ProductOrderModel> get cartList => _cart;
   int Totalprice = 0;
-  // CollectionReference _restaurant =
-  //     FirebaseFirestore.instance.collection('Restaurants');
 
-  bool extrasAreEqual(
-      List<AdditionsModel> extras1, List<AdditionsModel> extras2) {
-    if (extras1.length != extras2.length) return false;
-    for (var i = 0; i < extras1.length; i++) {
-      if (extras1[i].nameAR != extras2[i].nameAR) return false;
+
+  extrasAreEqual(List<AdditionsModel> extras1, List<AdditionsModel> extras2) {
+    if (extras1.length != extras2.length) {
+      return false;
+    } else {
+      for (var i = 0; i < extras1.length; i++) {
+        if (extras1[i] != extras2[i]) {
+          return false;
+        }
+      }
+      return true;
     }
-    return true;
   }
 
-  addToCart(CartModal cart) {
+  addToCart(ProductOrderModel product) {
     if (_cart.isEmpty) {
-      _cart.add(cart);
+      _cart.add(product);
       Get.snackbar('', '1تم اضافة المنتج بنجاح ');
-      Totalprice = cart.total;
     } else {
-      if (_cart[0].restorantId != cart.restorantId) {
+      if (_cart[0].restorantId != product.restorantId) {
         Get.snackbar('خطا', 'لا يمكنك الطلب من مطعمين مختلفين في طلب واحد');
       } else {
         int index = _cart.indexWhere((element) =>
-            element.product.nameEN == cart.product.nameEN &&
-            extrasAreEqual(element.product.addstions, cart.product.addstions));
+            (product.nameAR == product.nameAR) &&
+            extrasAreEqual(product.addstions, product.addstions));
         if (index == -1) {
-          _cart.add(cart);
+          _cart.add(product);
           Get.snackbar('', '2تم اضافة المنتج بنجاح ');
-          Totalprice = Totalprice + cart.total;
         } else {
           _cart[index].quantity = _cart[index].quantity + 1;
-          Totalprice = Totalprice + _cart[index].total;
           Get.snackbar('', '3تم اضافة المنتج بنجاح ');
         }
       }
@@ -46,23 +45,18 @@ class CartController extends GetxController {
     update();
   }
 
-  increasQuantity(CartModal item) {
-    var index = _cart
-        .indexWhere((element) => element.product.nameEN == item.product.nameEN);
+  increasQuantity(ProductOrderModel item) {
+    var index = _cart.indexWhere((element) => element.nameEN == item.nameEN);
     _cart[index].quantity = _cart[index].quantity + 1;
-    Totalprice = Totalprice + _cart[index].total;
     update();
   }
 
-  decreasQuantity(CartModal item) {
-    var index = _cart
-        .indexWhere((element) => element.product.nameEN == item.product.nameEN);
+  decreasQuantity(ProductOrderModel item) {
+    var index = _cart.indexWhere((element) => element.nameEN == item.nameEN);
     if (_cart[index].quantity != 1) {
       _cart[index].quantity = _cart[index].quantity - 1;
-      Totalprice = Totalprice - _cart[index].total;
     } else {
       _cart.remove(item);
-      Totalprice = Totalprice - item.total;
     }
     update();
   }

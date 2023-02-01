@@ -7,10 +7,11 @@ import 'package:restaurant_app/core/models/product.model.dart';
 import 'package:restaurant_app/screen/Cart.screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen(
+  ProductDetailScreen(
       {super.key, required this.product, required this.restorantId});
   final ProductsModel product;
   final String restorantId;
+  final CartController controllercart = Get.find();
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
@@ -19,11 +20,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _quantity = 1;
   int _additionPrice = 0;
   int totalPrice = 0;
-  List<AdditionsModel> addtions = [];
+  final List<AdditionsModel> _addtions = [];
+
   @override
   Widget build(BuildContext context) {
-    totalPrice =
-        ((int.parse(widget.product.price) + _additionPrice) * _quantity);
     return Scaffold(
         appBar: AppBar(
           actions: [
@@ -63,7 +63,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             _additionPrice =
                                 _additionPrice + int.parse(e.price);
                             e.isSelected = true;
-                            addtions.add(e);
+                            _addtions.add(e);
                             totalPrice = ((int.parse(widget.product.price) +
                                     _additionPrice) *
                                 _quantity);
@@ -73,7 +73,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             _additionPrice =
                                 _additionPrice - int.parse(e.price);
                             e.isSelected = false;
-                            addtions.remove(e);
+                            _addtions.remove(e);
                             totalPrice = ((int.parse(widget.product.price) +
                                     _additionPrice) *
                                 _quantity);
@@ -88,27 +88,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GetBuilder<CartController>(
-                    builder: ((controller) => ElevatedButton(
-                        onPressed: () {
-                          controller.addToCart(CartModal(
+                  ElevatedButton(
+                      onPressed: () async {
+                        await widget.controllercart.addToCart(ProductOrderModel(
                             restorantId: widget.restorantId,
-                            product: ProductsModel(
-                                index: widget.product.index,
-                                isActive: widget.product.isActive,
-                                price: widget.product.price,
-                                nameAR: widget.product.nameAR,
-                                nameEN: widget.product.nameEN,
-                                addstions: addtions,
-                                image: widget.product.image,
-                                preparationTime: widget.product.preparationTime,
-                                rate: widget.product.rate),
+                            nameAR: widget.product.nameAR,
+                            nameEN: widget.product.nameEN,
+                            image: widget.product.image,
+                            preparationTime: widget.product.preparationTime,
+                            price: widget.product.price,
                             quantity: _quantity,
-                            total: totalPrice,
-                          ));
-                        },
-                        child: const Text('اصافة الي العربه'))),
-                  ),
+                            addstions: _addtions));
+                      },
+                      child: const Text('اصافة الي العربه')),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
