@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:restaurant_app/core/models/Addition.model.dart';
 import 'package:restaurant_app/core/models/CartModal.dart';
 
